@@ -1,13 +1,13 @@
-package com.tuto.gestionStock;
+package com.spring.hibernate.tuto.springHibernate;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class GestionStockApplication {
+public class SpringHibernateApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GestionStockApplication.class, args);
+		SpringApplication.run(SpringHibernateApplication.class, args);
 	}
 
 }
