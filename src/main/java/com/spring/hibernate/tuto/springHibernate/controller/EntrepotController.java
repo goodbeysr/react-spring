@@ -39,7 +39,7 @@ public class EntrepotController {
         return EntrepotRepository.save(E);
     }
     
-    // Get a Single Note
+    // Get a Single entrepot
     @GetMapping("/entrepots/{id}")
     public entrepot getEntById(@PathVariable(value = "id") Long EntId) {
         return EntrepotRepository.findById(EntId)
