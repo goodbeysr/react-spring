@@ -17,6 +17,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -41,9 +42,8 @@ public class produit implements Serializable{
     @Temporal(TemporalType.TIMESTAMP)
     private Date DateLimite;
     
-    @ManyToOne
-    @JoinColumn(referencedColumnName = "idEntrepot")
-    private entrepot RefidEntrepot;
+    @ManyToMany(mappedBy= "product")
+    private List<entrepot> Entrepots;
     
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -119,12 +119,13 @@ public class produit implements Serializable{
         this.DateLimite = DateLimite;
     }
 
-    public entrepot getRefidEntrepot() {
-        return RefidEntrepot;
+    public List<entrepot> getEntrepots() {
+        return Entrepots;
     }
 
-    public void setRefidEntrepot(entrepot RefidEntrepot) {
-        this.RefidEntrepot = RefidEntrepot;
+    public void setEntrepots(List<entrepot> Entrepots) {
+        this.Entrepots = Entrepots;
     }
+
     
 }

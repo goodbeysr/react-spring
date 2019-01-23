@@ -45,15 +45,6 @@ public class EntrepotController {
                 .orElseThrow(() -> new ResourceNotFoundException("Entrepot", "id", EntId));
     }
     
-    @GetMapping("/entrepots/{id}/produit")
-    public List<produit> getAllproduitEnt(@PathVariable(value = "id") Long EntId) {
-        entrepot E = EntrepotRepository.findById(EntId)
-                .orElseThrow(() -> new ResourceNotFoundException("Entrepot", "id", EntId));
-        List<produit> LP = null;
-       
-       return LP;
-    }
-    
     // Update a Note
     @PutMapping("/entrepots/{id}")
     public entrepot updateEnt(@PathVariable(value = "id") Long EntId,
