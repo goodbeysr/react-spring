@@ -32,6 +32,7 @@ public class EntrepotController {
     public List<entrepot> getAllEntrepots() {
         return EntrepotRepository.findAll();
     }
+    
     // Create a new Note
     @PostMapping("/entrepots")
     public entrepot createEntrepot(@Valid @RequestBody entrepot E) {

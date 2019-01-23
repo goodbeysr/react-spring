@@ -38,27 +38,20 @@ public class ProduitController {
     public produit createProduit(@Valid @RequestBody produit P) {
         return ProduitRepository.save(P);
     }
+    
     // Get a Single Product
     @GetMapping("/produits/{id}")
     public produit getProduitById(@PathVariable(value = "id") Long ProdId) {
         return ProduitRepository.findById(ProdId)
                 .orElseThrow(() -> new ResourceNotFoundException("Produit", "id", ProdId));
     }
-    
-    @GetMapping("/produits/entrepots/{idEntr}")
-    public List<produit> getProduitByIdEntr(@PathVariable(value = "idEntr") Long EntrId) {
-         entrepot E = EntrepotRepository.findById(EntrId)
-                .orElseThrow(() -> new ResourceNotFoundException("Produit", "id", EntrId));
-         List<produit> LP = null;
-         List<produit> L = ProduitRepository.findAll();
-         //if(E !== null){
-             for(produit P : L){
-                 //if(!()) {
-             //} else {
-                     //P.getRefidEntrepot().getIdEntrepot() = E.getIdEntrepot() ;
-             }
-                     //LP.add(P);
-         return LP;
+ 
+    // Get all storqge of a product
+    @GetMapping("/produits/{id}/entrepot")
+    public List<entrepot> getEntepot(@PathVariable(value = "id") Long ProdId) {
+        produit P = ProduitRepository.findById(ProdId)
+                .orElseThrow(() -> new ResourceNotFoundException("Produit", "id", ProdId));
+        return P.getEntrepots();
     }
     
     // Update a Produit
@@ -74,10 +67,29 @@ public class ProduitController {
         P.setQuantite(ProdDetails.getQuantite());
         P.setPrixStock(ProdDetails.getPrixStock());
         P.setDateLimite(ProdDetails.getDateLimite());
+        P.setEntrepots(ProdDetails.getEntrepots());
 
         produit updatedProduit = ProduitRepository.save(P);
         return updatedProduit;
     }
+    
+    @PutMapping("/produits/{id}/{entrepot}")
+    public produit Addentrepot(@PathVariable(value = "id") Long ProdId,@PathVariable(value = "entrepot") Long EntId) {
+
+        produit P = ProduitRepository.findById(ProdId)
+                .orElseThrow(() -> new ResourceNotFoundException("Produit", "id", ProdId));
+        
+        entrepot E = EntrepotRepository.findById(EntId)
+                .orElseThrow(() -> new ResourceNotFoundException("entrepot", "id", EntId));
+
+        List<entrepot> L = P.getEntrepots();
+        L.add(E);
+        P.setEntrepots(L);
+
+        produit updatedProduit = ProduitRepository.save(P);
+        return updatedProduit;
+    }
+    
     // Delete a Product
     @DeleteMapping("/produits/{id}")
     public ResponseEntity<?> deleteNote(@PathVariable(value = "id") Long ProdId) {
