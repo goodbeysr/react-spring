@@ -10,7 +10,9 @@ package com.spring.hibernate.tuto.springHibernate.controller;
  * @author pc
  */
 import com.spring.hibernate.tuto.springHibernate.exception.ResourceNotFoundException;
+import com.spring.hibernate.tuto.springHibernate.model.entrepot;
 import com.spring.hibernate.tuto.springHibernate.model.produit;
+import com.spring.hibernate.tuto.springHibernate.repository.entrepotRepository;
 import com.spring.hibernate.tuto.springHibernate.repository.produitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ import java.util.List;
 public class ProduitController {
     @Autowired
     produitRepository ProduitRepository;
+    entrepotRepository EntrepotRepository;
 
     // Get All Products
     @GetMapping("/produits")
@@ -42,6 +45,22 @@ public class ProduitController {
                 .orElseThrow(() -> new ResourceNotFoundException("Produit", "id", ProdId));
     }
     
+    @GetMapping("/produits/entrepots/{idEntr}")
+    public List<produit> getProduitByIdEntr(@PathVariable(value = "idEntr") Long EntrId) {
+         entrepot E = EntrepotRepository.findById(EntrId)
+                .orElseThrow(() -> new ResourceNotFoundException("Produit", "id", EntrId));
+         List<produit> LP = null;
+         List<produit> L = ProduitRepository.findAll();
+         //if(E !== null){
+             for(produit P : L){
+                 //if(!()) {
+             //} else {
+                     //P.getRefidEntrepot().getIdEntrepot() = E.getIdEntrepot() ;
+             }
+                     //LP.add(P);
+         return LP;
+    }
+    
     // Update a Produit
     @PutMapping("/produits/{id}")
     public produit updateProduit(@PathVariable(value = "id") Long ProdId,
@@ -55,7 +74,6 @@ public class ProduitController {
         P.setQuantite(ProdDetails.getQuantite());
         P.setPrixStock(ProdDetails.getPrixStock());
         P.setDateLimite(ProdDetails.getDateLimite());
-        P.setRefidEntrepot(ProdDetails.getRefidEntrepot());
 
         produit updatedProduit = ProduitRepository.save(P);
         return updatedProduit;

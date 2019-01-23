@@ -16,6 +16,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "entrepot")
@@ -38,6 +39,9 @@ public class entrepot implements Serializable {
     
     //@NotBlank
     private boolean etat;
+    
+    @ManyToMany
+    private List<produit> product;
 
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -110,5 +114,15 @@ public class entrepot implements Serializable {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    public List<produit> getProduct() {
+        return product;
+    }
+
+    public void setProduct(List<produit> product) {
+        this.product = product;
+    }
+    
+    
     
 }
