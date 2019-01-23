@@ -32,7 +32,21 @@ public class ResourceNotFoundException extends RuntimeException{
         return fieldName;
     }
 
+    public void setResourceName(String resourceName) {
+        this.resourceName = resourceName;
+    }
+
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
+    }
+
+    public void setFieldValue(Object fieldValue) {
+        this.fieldValue = fieldValue;
+    }
+
     public Object getFieldValue() {
         return fieldValue;
     }
+    
+    
 }

@@ -12,7 +12,9 @@ package com.spring.hibernate.tuto.springHibernate.controller;
 
 import com.spring.hibernate.tuto.springHibernate.exception.ResourceNotFoundException;
 import com.spring.hibernate.tuto.springHibernate.model.entrepot;
+import com.spring.hibernate.tuto.springHibernate.model.produit;
 import com.spring.hibernate.tuto.springHibernate.repository.entrepotRepository;
+import static java.util.Arrays.sort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,44 +25,58 @@ import java.util.List;
 @RequestMapping("/api")
 public class EntrepotController {
     @Autowired
-    entrepotRepository noteRepository;
+    entrepotRepository EntrepotRepository;
 
     // Get All Notes
-    @GetMapping("/notes")
-    public List<entrepot> getAllNotes() {
-        return noteRepository.findAll();
+    @GetMapping("/entrepots")
+    public List<entrepot> getAllEntrepots() {
+        return EntrepotRepository.findAll();
     }
     // Create a new Note
-    @PostMapping("/notes")
-    public entrepot createNote(@Valid @RequestBody entrepot note) {
-        return noteRepository.save(note);
+    @PostMapping("/entrepots")
+    public entrepot createEntrepot(@Valid @RequestBody entrepot E) {
+        return EntrepotRepository.save(E);
     }
+    
     // Get a Single Note
-    @GetMapping("/notes/{id}")
-    public entrepot getNoteById(@PathVariable(value = "id") Long noteId) {
-        return noteRepository.findById(noteId)
-                .orElseThrow(() -> new ResourceNotFoundException("Note", "id", noteId));
+    @GetMapping("/entrepots/{id}")
+    public entrepot getEntById(@PathVariable(value = "id") Long EntId) {
+        return EntrepotRepository.findById(EntId)
+                .orElseThrow(() -> new ResourceNotFoundException("Entrepot", "id", EntId));
     }
+    
+    @GetMapping("/entrepots/{id}/produit")
+    public List<produit> getAllproduitEnt(@PathVariable(value = "id") Long EntId) {
+        entrepot E = EntrepotRepository.findById(EntId)
+                .orElseThrow(() -> new ResourceNotFoundException("Entrepot", "id", EntId));
+        List<produit> LP = null;
+       
+       return LP;
+    }
+    
     // Update a Note
-    @PutMapping("/notes/{id}")
-    public entrepot updateNote(@PathVariable(value = "id") Long noteId,
-                                            @Valid @RequestBody entrepot noteDetails) {
+    @PutMapping("/entrepots/{id}")
+    public entrepot updateEnt(@PathVariable(value = "id") Long EntId,
+                                            @Valid @RequestBody entrepot EntDetails) {
 
-        entrepot note = noteRepository.findById(noteId)
-                .orElseThrow(() -> new ResourceNotFoundException("Note", "id", noteId));
+        entrepot E = EntrepotRepository.findById(EntId)
+                .orElseThrow(() -> new ResourceNotFoundException("Entrepot", "id", EntId));
 
-        note.setTitle(noteDetails.getTitle());
-        note.setContent(noteDetails.getContent());
+        E.setNomEntrepot(EntDetails.getNomEntrepot());
+        E.setAdresse(EntDetails.getAdresse());
+        E.setCapacite(EntDetails.getCapacite());
+        E.setEtat(EntDetails.isEtat());
 
-        entrepot updatedNote = noteRepository.save(note);
-        return updatedNote;
+        entrepot updatedEntrepot = EntrepotRepository.save(E);
+        return updatedEntrepot;
     }
     // Delete a Note
-    public ResponseEntity<?> deleteNote(@PathVariable(value = "id") Long noteId) {
-    entrepot note = noteRepository.findById(noteId)
-            .orElseThrow(() -> new ResourceNotFoundException("Note", "id", noteId));
+    @DeleteMapping("/entrepots/{id}")
+    public ResponseEntity<?> deleteEnt(@PathVariable(value = "id") Long EntId) {
+    entrepot E = EntrepotRepository.findById(EntId)
+            .orElseThrow(() -> new ResourceNotFoundException("Entrepot", "id", EntId));
 
-    noteRepository.delete(note);
+    EntrepotRepository.delete(E);
 
     return ResponseEntity.ok().build();
 }

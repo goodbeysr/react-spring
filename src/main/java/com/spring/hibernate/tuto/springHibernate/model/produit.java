@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package com.spring.hibernate.tuto.springHibernate.model;
+
 /**
  *
  * @author pc
@@ -17,28 +18,33 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
+
 @Entity
-@Table(name = "entrepot")
+@Table(name = "produit")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"createdAt", "updatedAt"}, 
         allowGetters = true)
-public class entrepot implements Serializable {
+public class produit implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idEntrepot;
-
-    @NotBlank
-    private String nomEntrepot;
-
-    @NotBlank
-    private String adresse;
+    private Long idProduit;
     
-    //@NotBlank
-    private float capacite;
-    
-    //@NotBlank
-    private boolean etat;
+    @NotBlank
+    private String nomProduit;
 
+    private float volume;
+    
+    private int quantite;
+    
+    private float prixStock;
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date DateLimite;
+    
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "idEntrepot")
+    private entrepot RefidEntrepot;
+    
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
@@ -49,50 +55,44 @@ public class entrepot implements Serializable {
     @LastModifiedDate
     private Date updatedAt;
 
-    // Getters and Setters ... (Omitted for brevity)
-
-    public Long getIdEntrepot() {
-        return idEntrepot;
+    public Long getIdProduit() {
+        return idProduit;
     }
 
-    public void setIdEntrepot(Long idEntrepot) {
-        this.idEntrepot = idEntrepot;
+    public void setIdProduit(Long idProduit) {
+        this.idProduit = idProduit;
     }
 
-    public String getNomEntrepot() {
-        return nomEntrepot;
+    public String getNomProduit() {
+        return nomProduit;
     }
 
-    public void setNomEntrepot(String nomEntrepot) {
-        this.nomEntrepot = nomEntrepot;
+    public void setNomProduit(String nomProduit) {
+        this.nomProduit = nomProduit;
     }
 
-    public String getAdresse() {
-        return adresse;
+    public float getVolume() {
+        return volume;
     }
 
-    public void setAdresse(String adresse) {
-        this.adresse = adresse;
+    public void setVolume(float volume) {
+        this.volume = volume;
     }
 
-    public float getCapacite() {
-        return capacite;
+    public int getQuantite() {
+        return quantite;
     }
 
-    public void setCapacite(float capacite) {
-        this.capacite = capacite;
+    public void setQuantite(int quantite) {
+        this.quantite = quantite;
     }
 
-    public boolean isEtat() {
-        return etat;
-    }
-    
-    public boolean getEtat() {
-        return this.etat;
+    public float getPrixStock() {
+        return prixStock;
     }
 
-    public void setEtat(boolean etat) {
-        this.etat = etat;
+    public void setPrixStock(float prixStock) {
+        this.prixStock = prixStock;
     }
 
     public Date getCreatedAt() {
@@ -109,6 +109,22 @@ public class entrepot implements Serializable {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Date getDateLimite() {
+        return DateLimite;
+    }
+
+    public void setDateLimite(Date DateLimite) {
+        this.DateLimite = DateLimite;
+    }
+
+    public entrepot getRefidEntrepot() {
+        return RefidEntrepot;
+    }
+
+    public void setRefidEntrepot(entrepot RefidEntrepot) {
+        this.RefidEntrepot = RefidEntrepot;
     }
     
 }
