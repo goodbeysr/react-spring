@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api")
@@ -47,7 +48,7 @@ public class EntrepotController {
     }
     
     @GetMapping("/entrepots/{id}/produit")
-    public List<produit> getProdofprod(@PathVariable(value = "id") Long EntId) {
+    public Set<produit> getProdofprod(@PathVariable(value = "id") Long EntId) {
         entrepot E = EntrepotRepository.findById(EntId)
                 .orElseThrow(() -> new ResourceNotFoundException("Entrepot", "id", EntId));
         return E.getProduct();

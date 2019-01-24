@@ -16,7 +16,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "entrepot")
@@ -40,8 +42,17 @@ public class entrepot implements Serializable {
     //@NotBlank
     private boolean etat;
     
-    @ManyToMany
-    private List<produit> product;
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                CascadeType.PERSIST,
+                CascadeType.MERGE
+            })
+    @JoinTable(
+        name = "entrepot_product", 
+        joinColumns = { @JoinColumn(name = "idEntrepot") }, 
+        inverseJoinColumns = { @JoinColumn(name = "idProduit") }
+    )
+    Set<produit> product  = new HashSet<>();
 
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -115,11 +126,11 @@ public class entrepot implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    public List<produit> getProduct() {
+    public Set<produit> getProduct() {
         return product;
     }
 
-    public void setProduct(List<produit> product) {
+    public void setProduct(Set<produit> product) {
         this.product = product;
     }
     

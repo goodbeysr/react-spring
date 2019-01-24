@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api")
@@ -48,7 +49,7 @@ public class ProduitController {
  
     // Get all storqge of a product
     @GetMapping("/produits/{id}/entrepot")
-    public List<entrepot> getEntepot(@PathVariable(value = "id") Long ProdId) {
+    public Set<entrepot> getEntepot(@PathVariable(value = "id") Long ProdId) {
         produit P = ProduitRepository.findById(ProdId)
                 .orElseThrow(() -> new ResourceNotFoundException("Produit", "id", ProdId));
         return P.getEntrepots();
@@ -78,13 +79,10 @@ public class ProduitController {
 
         produit P = ProduitRepository.findById(ProdId)
                 .orElseThrow(() -> new ResourceNotFoundException("Produit", "id", ProdId));
+        entrepot E = EntrepotRepository.findById(EntId).orElseThrow(() -> new ResourceNotFoundException("entrepot", "id", EntId));
         
-        entrepot E = EntrepotRepository.findById(EntId)
-                .orElseThrow(() -> new ResourceNotFoundException("entrepot", "id", EntId));
-
-        List<entrepot> L = P.getEntrepots();
-        L.add(E);
-        P.setEntrepots(L);
+        //P.getEntrepots().add(E);
+        E.getProduct().add(P);
 
         produit updatedProduit = ProduitRepository.save(P);
         return updatedProduit;
