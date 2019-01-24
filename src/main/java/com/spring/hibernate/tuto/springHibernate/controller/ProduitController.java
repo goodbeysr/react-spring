@@ -40,6 +40,15 @@ public class ProduitController {
         return ProduitRepository.save(P);
     }
     
+    @PostMapping("/entrepots/{EntId}/produit")
+    public produit createProduit(@PathVariable (value = "EntId") Long EntId,
+                                 @Valid @RequestBody produit comment) {
+        return EntrepotRepository.findById(EntId).map(Ent -> {
+            comment.setEntrepots(Ent);
+            return ProduitRepository.save(comment);
+        }).orElseThrow(() -> new ResourceNotFoundException("PostId " , " not found", EntId ));
+    }
+    
     // Get a Single Product
     @GetMapping("/produits/{id}")
     public produit getProduitById(@PathVariable(value = "id") Long ProdId) {
@@ -48,11 +57,11 @@ public class ProduitController {
     }
  
     // Get all storqge of a product
-    @GetMapping("/produits/{id}/entrepot")
-    public Set<entrepot> getEntepot(@PathVariable(value = "id") Long ProdId) {
-        produit P = ProduitRepository.findById(ProdId)
+    @GetMapping("/entrepots/{id}/produits")
+    public Set<produit> getproduitEntrepot(@PathVariable(value = "id") Long ProdId) {
+        entrepot E = EntrepotRepository.findById(ProdId)
                 .orElseThrow(() -> new ResourceNotFoundException("Produit", "id", ProdId));
-        return P.getEntrepots();
+        return E.getProduct();
     }
     
     // Update a Produit
@@ -97,6 +106,7 @@ public class ProduitController {
     ProduitRepository.delete(P);
 
     return ResponseEntity.ok().build();
-}
+    }
+    
     
 }

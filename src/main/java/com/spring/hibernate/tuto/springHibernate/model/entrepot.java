@@ -42,16 +42,9 @@ public class entrepot implements Serializable {
     //@NotBlank
     private boolean etat;
     
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                CascadeType.PERSIST,
-                CascadeType.MERGE
-            })
-    @JoinTable(
-        name = "entrepot_product", 
-        joinColumns = { @JoinColumn(name = "idEntrepot") }, 
-        inverseJoinColumns = { @JoinColumn(name = "idProduit") }
-    )
+    @OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            mappedBy = "Entrepots")    
     Set<produit> product  = new HashSet<>();
 
     @Column(nullable = false, updatable = false)

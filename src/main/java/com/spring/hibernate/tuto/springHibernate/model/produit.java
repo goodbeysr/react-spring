@@ -44,12 +44,9 @@ public class produit implements Serializable{
     @Temporal(TemporalType.TIMESTAMP)
     private Date DateLimite;
     
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                CascadeType.PERSIST,
-                CascadeType.MERGE
-            },mappedBy= "product")
-    Set<entrepot> Entrepots  = new HashSet<>();;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idEntrepot", nullable = true)
+    private entrepot Entrepots;
     
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -125,13 +122,12 @@ public class produit implements Serializable{
         this.DateLimite = DateLimite;
     }
 
-    public Set<entrepot> getEntrepots() {
+    public entrepot getEntrepots() {
         return Entrepots;
     }
 
-    public void setEntrepots(Set<entrepot> Entrepots) {
+    public void setEntrepots(entrepot Entrepots) {
         this.Entrepots = Entrepots;
     }
-
     
 }
