@@ -1,4 +1,4 @@
-package com.spring.hibernate.tuto.springHibernate;
+package com.example.example;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class SpringHibernateApplicationTests {
+public class ExampleApplicationTests {
 
 	@Test
 	public void contextLoads() {
