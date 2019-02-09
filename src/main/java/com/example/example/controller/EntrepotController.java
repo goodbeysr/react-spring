@@ -36,6 +36,7 @@ public class EntrepotController {
     public Map<String,Object> getAllEntrepots(){
         Map<String,Object> m= new TreeMap<>();
         m.put("entrepots", e.findAll());
+        log.info(e.toString());
         return m;
     }
     
@@ -56,8 +57,15 @@ public class EntrepotController {
     @GetMapping("/entrepot/products/{id}")
     public Map<String,Object> getEntrepotProducts(@PathVariable(value = "id") Integer id){
         Map<String,Object> m= new TreeMap<>();
-        m.put("products", e.findById(id).get());
-        return m;
+        Entrepot en;
+        try{
+            en = e.findById(id).get();
+            m.put("products", en);
+        }catch(Exception ex){
+            m.put("message", "Pas d'entrepot avec id " + id);
+        }finally{
+            return m;
+        }
     }
     
     @GetMapping("/entrepot/{ide}/product/{idp}")
@@ -151,13 +159,13 @@ public class EntrepotController {
                 EntrepotProduct ep = new EntrepotProduct(pr,en,c.getCapacite());
             
                 if(pr.getEntrepotProduct().contains(ep)){
-
+                    List<EntrepotProduct> eps = new ArrayList<>();
                     for(EntrepotProduct entrepotP : pr.getEntrepotProduct()){
                         if(entrepotP.getProduct().getId() == pr.getId() && entrepotP.getEntrepot().getId() == en.getId()){
                             if(sum(pr.getId()) + c.getCapacite() <= pr.getQuantite()){
-                                if(en.getCapacite() >= en.getPris() + c.getCapacite()){
-                                    entrepotP.setCapacite(c.getCapacite());
+                                if(en.getCapacite() >= en.getPris() + c.getCapacite() - entrepotP.getCapacite()){
                                     en.setPris(en.getPris()-entrepotP.getCapacite()+c.getCapacite());
+                                    entrepotP.setCapacite(c.getCapacite());
                                     m.put("message","QUANTITE modifié du Produit " + pr.getName());
                                     break;
                                 }else{
@@ -168,8 +176,11 @@ public class EntrepotController {
                                 m.put("message","QUANTITE Produit " + pr.getName() + " N'est pas suffisante");
                             }
                         }
+                        eps.add(entrepotP);
                     }
-                    p.save(pr);
+                    en.getEntrepotProduct().clear();
+                    en.getEntrepotProduct().addAll(eps);
+                    e.save(en);
                 }else{
 
                     if(sum(pr.getId()) + c.getCapacite() <= pr.getQuantite()){
@@ -179,7 +190,7 @@ public class EntrepotController {
                             p.save(pr);
                             m.put("message","Produit " +pr.getName()+ " AJOUTER à l'entrepot " + en.getName());
                         }else{
-                            m.put("message","ENTREPOT FULL");
+                            m.put("message","PAS D'espace suffisant");
                         }
                     }else{
                         m.put("message","QUANTITE Produit " + pr.getName() + " N'est pas suffisante");
@@ -187,10 +198,10 @@ public class EntrepotController {
                 }
 
             }else{
-                m.put("message","Entrepot or Product Not found!");
+                m.put("message","Entrepot fermé!");
             }
             }else{
-            m.put("message","Entrepot fermé!");
+            m.put("message","Entrepot or Product Not found!");
         }
         
         return m;
@@ -206,7 +217,12 @@ public class EntrepotController {
         }
         return sum;
     }
-    
+    /*@DeleteMapping("/deleteEntrepotProduct/{ide}/{idp}")
+    public Map<String,Object> deleteEntToProd(@PathVariable(value = "ide") Integer ide,@PathVariable(value = "idp") Integer idp,Integer capacite){
+        Map<String,Object> m= new TreeMap<>();
+        m.put("resultat", capacite);
+        return m;
+    }*/
     @DeleteMapping("/deleteEntrepotProduct/{ide}/{idp}")
     public Map<String,Object> deleteEntToProd(@PathVariable(value = "ide") Integer ide,@PathVariable(value = "idp") Integer idp,@Valid @RequestBody Capacite c){
         Map<String,Object> m= new TreeMap<>();

@@ -1,13 +1,9 @@
 package com.example.example.model;
         
 import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.FetchType;
@@ -17,16 +13,17 @@ import javax.persistence.FetchType;
 @Setter
 @NoArgsConstructor
 @RequiredArgsConstructor
-@JsonSerialize(typing = JsonSerialize.Typing.STATIC)
 public class EntrepotProduct implements Serializable {
     @Id
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "product_id")
+    @JsonIgnoreProperties("entrepotProduct")
     private @NonNull Product product;
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "entrepot_id")
+    @JsonIgnoreProperties("entrepotProduct")
     private @NonNull Entrepot entrepot;
 
     private @NonNull Integer capacite;

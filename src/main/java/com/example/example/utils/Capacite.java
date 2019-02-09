@@ -19,6 +19,10 @@ public class Capacite {
     public Capacite(Integer capacite) {
         this.capacite = capacite;
     }
+    
+    public Capacite(String capacite) {
+        this.capacite = Integer.parseInt(capacite);
+    }
 
     public Integer getCapacite() {
         return capacite;

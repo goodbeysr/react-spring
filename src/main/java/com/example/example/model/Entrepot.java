@@ -1,7 +1,7 @@
 package com.example.example.model;
 
-import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.databind.annotation.*;
+
+
 import java.util.*;
 import lombok.*;
 
@@ -14,10 +14,6 @@ import org.hibernate.annotations.CreationTimestamp;
 @EqualsAndHashCode(exclude = "entrepotProduct")
 @RequiredArgsConstructor
 @NoArgsConstructor
-@JsonIdentityInfo(
-  generator = ObjectIdGenerators.PropertyGenerator.class, 
-  property = "id")
-@JsonSerialize(typing = JsonSerialize.Typing.STATIC)
 public class Entrepot {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,7 +30,6 @@ public class Entrepot {
     private @NonNull Boolean etat;
 
     @OneToMany(mappedBy = "entrepot", cascade = CascadeType.ALL, orphanRemoval = true)
-    
     private List<EntrepotProduct> entrepotProduct = new ArrayList<>();
     
     @Column(nullable = false, updatable = false)

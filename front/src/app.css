@@ -1,0 +1,16 @@
+.container, .container-fluid {
+    margin-top: 20px;
+}
+
+.btn-success{
+    background-color: #79d58e;
+}
+.btn-danger{
+    background-color: #ff0018;
+}
+.form-group > .btn {
+    margin: 7px;
+}
+.table td, .table th {
+    text-align: center;
+}
